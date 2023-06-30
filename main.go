@@ -174,7 +174,7 @@ func runFortnite(localappdata string) {
 		if err != nil {
 			panic(err)
 		} else {
-			err := injectDll(uint32(process.ProcessID), localappdata+"/Buzz.dll")
+			err := injectDll(uint32(process.ProcessID), localappdata + "/Buzz.dll")
 			if err != nil {
 				panic(err)
 			}
