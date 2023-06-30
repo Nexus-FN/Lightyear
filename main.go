@@ -197,11 +197,8 @@ func runFortnite(localappdata string, dllName string) {
 
 		color.White("Starting Fortnite...")
 
-		color.White("Starting FortniteLauncher.exe...")
 		startLauncher(localappdata + "/FortniteLauncher.exe")
-		color.White("Starting FortniteClient-Win64-Shipping_BE.exe...")
 		startLauncher(localappdata + "/FortniteClient-Win64-Shipping_BE.exe")
-		color.White("Starting FortniteClient-Win64-Shipping_EAC.exe...")
 		startShipping(path, args)
 
 		process, err := injgo.FindProcessByName("FortniteClient-Win64-Shipping.exe")
