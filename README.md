@@ -1,4 +1,4 @@
-<img src="https://cdn.nexusfn.net/file/2023/06/Lightyear.png">
+<img src="https://cdn.nexusfn.net/file/2023/06/Lightyearnew.png">
 
 Open source Fortnite launcher written in Go
 
