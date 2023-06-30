@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"io/ioutil"
 	"os/exec"
 	"runtime"
@@ -42,8 +43,41 @@ var (
 
 func main() {
 
+	if !fileExists("redirect.json") {
+		file := []byte(`{ "name": "Buzz.dll", "download": "https://cdn.nexusfn.net/file/2023/06/TV.dll" }`)
+		err := ioutil.WriteFile("redirect.json", file, 0644)
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	fileData, err := ioutil.ReadFile("redirect.json")
+	if err != nil {
+		panic(err)
+	}
+
+	var jsonData map[string]interface{}
+	err = json.Unmarshal(fileData, &jsonData)
+	if err != nil {
+		panic(err)
+	}
+
+	dllName, ok := jsonData["name"].(string)
+	if !ok {
+		panic("Invalid JSON structure: 'name' key is missing or not a string")
+	}
+
+	dllDownload, ok := jsonData["download"].(string)
+	if !ok {
+		panic("Invalid JSON structure: 'download' key is missing or not a string")
+	}
+
+	if !strings.HasSuffix(dllName, ".dll") {
+		dllName += ".dll"
+	}
+
 	fileList := []File{
-		{URL: "https://cdn.nexusfn.net/file/2023/06/TV.dll", Name: "Buzz.dll"},
+		{URL: dllDownload, Name: dllName},
 		{URL: "https://cdn.discordapp.com/attachments/958139296936783892/1000707724507623424/FortniteClient-Win64-Shipping_BE.exe", Name: "FortniteClient-Win64-Shipping_BE.exe"},
 		{URL: "https://cdn.discordapp.com/attachments/958139296936783892/1000707724818006046/FortniteLauncher.exe", Name: "FortniteLauncher.exe"},
 	}
@@ -85,7 +119,7 @@ func main() {
 
 	switch input {
 	case "1":
-		runFortnite(localappdata)
+		runFortnite(localappdata, dllName)
 	case "2":
 		changePath(localappdata)
 		main()
@@ -117,7 +151,7 @@ func main() {
 
 }
 
-func runFortnite(localappdata string) {
+func runFortnite(localappdata string, dllName string) {
 
 	file, err := os.Open(localappdata + "/path.txt")
 	if err != nil {
@@ -174,7 +208,7 @@ func runFortnite(localappdata string) {
 		if err != nil {
 			panic(err)
 		} else {
-			err := injectDll(uint32(process.ProcessID), localappdata + "/Buzz.dll")
+			err := injectDll(uint32(process.ProcessID), localappdata+ dllName)
 			if err != nil {
 				panic(err)
 			}
