@@ -119,7 +119,7 @@ func main() {
 
 	switch input {
 	case "1":
-		runFortnite(localappdata, dllName)
+		go runFortnite(localappdata, dllName)
 	case "2":
 		changePath(localappdata)
 		main()
