@@ -6,7 +6,7 @@ To use with your own Cobalt dll, replace url in main.go with your own.
 
 ## How to build: 
 
-- Download Go from https://go.dev/dl/go1.20.5.windows-amd64.msi
+- Download Go from [here](https://go.dev/dl/go1.20.5.windows-amd64.msi)
 - Download the source code
 - Extract zip file
 - Open build.bat
