@@ -2,18 +2,17 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
+	"io"
 	"io/ioutil"
+	"net/http"
+	"os"
 	"os/exec"
+	"path/filepath"
 	"runtime"
 	"strings"
 	"syscall"
 	"unsafe"
-
-	"fmt"
-	"io"
-	"net/http"
-	"os"
-	"path/filepath"
 
 	"bufio"
 
@@ -32,6 +31,7 @@ const (
 	MEM_COMMIT             = 0x1000
 	MEM_RESERVE            = 0x2000
 	PAGE_EXECUTE_READWRITE = 0x40
+	STD_OUTPUT_HANDLE = -11
 )
 
 // Function prototypes for DLL injection
@@ -120,8 +120,9 @@ func main() {
 	switch input {
 	case "1":
 		go runFortnite(localappdata, dllName)
-		var input string
-		fmt.Scanln(&input)
+		var inout string
+		color.White("Press enter to exit")
+		fmt.Scanln(&inout)
 	case "2":
 		changePath(localappdata)
 		main()
@@ -211,6 +212,7 @@ func runFortnite(localappdata string, dllName string) {
 			if err != nil {
 				panic(err)
 			}
+			println("Injected")
 		}
 
 	}
@@ -283,6 +285,7 @@ func injectDll(processID uint32, dllPath string) error {
 }
 
 func startLauncher(path string) {
+	println("Starting launcher")
 	if !fileExists(path) {
 		color.Red("Launcher not found, please try again")
 		return
@@ -292,6 +295,7 @@ func startLauncher(path string) {
 }
 
 func startShipping(gamePath string, args []string) {
+	println("Starting shipping")
 	if !fileExists(filepath.Join(gamePath, "FortniteGame", "Binaries", "Win64", "FortniteClient-Win64-Shipping.exe")) {
 		color.Red("Shipping not found, please try again")
 		return
