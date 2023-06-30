@@ -120,6 +120,8 @@ func main() {
 	switch input {
 	case "1":
 		go runFortnite(localappdata, dllName)
+		var input string
+		fmt.Scanln(&input)
 	case "2":
 		changePath(localappdata)
 		main()
